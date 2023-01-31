@@ -1,10 +1,11 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
 'use client';
 import useMap from '@/hooks/useMap';
+import type { IUseMap } from '@/hooks/useMap/types';
 import Script from 'next/script';
 
-const Map = () => {
-  useMap();
+const Map = (props: IUseMap) => {
+  useMap(props);
 
   return (
     <div>
