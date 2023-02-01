@@ -1,1 +1,5 @@
-export default interface IMap {}
+export default interface IMap {
+  functions?: {
+    searchCoordinateToAddress?: boolean;
+  };
+}
