@@ -14,7 +14,7 @@ const Map = ({ style, ...props }: IMapComponent) => {
   return (
     <div>
       <Script
-        src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=feovhco8pm"
+        src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=feovhco8pm&submodules=geocoder"
         strategy="beforeInteractive"
       ></Script>
       <div id="map" style={style}></div>
