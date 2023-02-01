@@ -4,7 +4,11 @@ import useMap from '@/hooks/useMap';
 import type IMap from '@/hooks/useMap/types';
 import Script from 'next/script';
 
-const Map = (props: IMap) => {
+interface IMapComponent extends IMap {
+  style?: React.CSSProperties;
+}
+
+const Map = ({ style, ...props }: IMapComponent) => {
   useMap(props);
 
   return (
@@ -13,7 +17,7 @@ const Map = (props: IMap) => {
         src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=feovhco8pm"
         strategy="beforeInteractive"
       ></Script>
-      <div id="map" style={{ width: 375, height: 600 }}></div>
+      <div id="map" style={style}></div>
     </div>
   );
 };

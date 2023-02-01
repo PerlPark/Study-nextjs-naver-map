@@ -4,7 +4,7 @@ import type { NextPage } from 'next';
 const Main: NextPage = () => {
   return (
     <div>
-      <Map />
+      <Map style={{ width: 375, height: 600 }} />
     </div>
   );
 };
