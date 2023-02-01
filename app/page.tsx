@@ -1,10 +1,12 @@
-import Main from '@/pages/main';
-import styles from './page.module.css';
+import Map from '@/components/Map';
+import type { NextPage } from 'next';
 
-export default function Home() {
+const Main: NextPage = () => {
   return (
-    <main className={styles.main}>
-      <Main />
-    </main>
+    <div>
+      <Map style={{ width: 375, height: 600 }} />
+    </div>
   );
-}
+};
+
+export default Main;

@@ -105,3 +105,12 @@ a {
     color-scheme: dark;
   }
 }
+
+main {
+  padding: 6rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
