@@ -4,12 +4,20 @@ import { useEffect, useRef } from 'react';
 import type IMap from './types';
 import searchAddressToCoordinate from './functions/searchAddressToCoordinate';
 
-const useMap = ({ functions }: IMap) => {
+const useMap = ({ markers, functions }: IMap) => {
   const mapRef = useRef<naver.maps.Map>();
 
   useEffect(() => {
     mapRef.current = new naver.maps.Map('map');
     const map = mapRef.current;
+
+    // 마커 생성
+    markers?.map(([lat, lng]) => {
+      new naver.maps.Marker({
+        map: map,
+        position: new naver.maps.LatLng(lat, lng),
+      }).setMap(map);
+    });
 
     const infoWindow = new naver.maps.InfoWindow({
       content: '',
