@@ -3,6 +3,7 @@ import searchCoordinateToAddress from '@/hooks/useMap/functions/searchCoordinate
 import { useEffect, useRef } from 'react';
 import type IMap from './types';
 import searchAddressToCoordinate from './functions/searchAddressToCoordinate';
+import marker from './marker';
 
 const useMap = ({ markers, functions }: IMap) => {
   const mapRef = useRef<naver.maps.Map>();
@@ -15,6 +16,11 @@ const useMap = ({ markers, functions }: IMap) => {
     markers?.map(([lat, lng]) => {
       new naver.maps.Marker({
         map: map,
+        icon: {
+          content: marker,
+          size: new naver.maps.Size(12, 12),
+          anchor: new naver.maps.Point(6, 6),
+        },
         position: new naver.maps.LatLng(lat, lng),
       }).setMap(map);
     });
