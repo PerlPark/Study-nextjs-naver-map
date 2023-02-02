@@ -39,13 +39,12 @@ const useMap = ({ functions }: IMap) => {
               contents: addresses.texts,
             })
           );
-          infoWindow.open(
-            map,
-            new naver.maps.Point(
-              Number(addresses.items[0].x),
-              Number(addresses.items[0].y)
-            )
+          const point = new naver.maps.Point(
+            Number(addresses.items[0].x),
+            Number(addresses.items[0].y)
           );
+          map.setCenter(point);
+          infoWindow.open(map, point);
         }
       );
     }
