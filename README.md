@@ -101,5 +101,5 @@
 
 ### # 좌표-주소-변환
 
-- [ ] [좌표계 변환하기](https://navermaps.github.io/maps.js.ncp/docs/tutorial-1-geocoder-transcoord.example.html)
-- [ ] [주소와 좌표 검색 API 사용하기](https://navermaps.github.io/maps.js.ncp/docs/tutorial-3-geocoder-geocoding.example.html)
+- [x] [주소와 좌표 검색 API 사용하기](https://navermaps.github.io/maps.js.ncp/docs/tutorial-3-geocoder-geocoding.example.html)
+  - Branch > [geocoder/geocoding](https://github.com/PerlPark/Study-nextjs-naver-map/tree/geocoder/geocoding)
