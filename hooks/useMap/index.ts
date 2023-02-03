@@ -6,32 +6,75 @@ import searchAddressToCoordinate from './functions/searchAddressToCoordinate';
 import createMarkers from './utils/createMarkers';
 import CONST from '@/constants/const';
 import idleHandler from './eventHandlers/idleHandler';
+import coordsToPointArray from './utils/coordsToPointArray';
 
-const useMap = ({ markers: latLngs, functions }: IMap) => {
+const useMap = ({ markers: latLngs, functions, geoJson }: IMap) => {
   const mapRef = useRef<naver.maps.Map>();
+  const infoWindowRef = useRef<naver.maps.InfoWindow>();
 
   const [markers, setMarkers] = useState<naver.maps.Marker[]>([]);
 
+  // 객체 생성
   useEffect(() => {
-    mapRef.current = new naver.maps.Map('map', {
-      center: [127.0473753, 37.5175066],
-      zoom: 12,
-    });
-    const map = mapRef.current;
-
-    const infoWindow = new naver.maps.InfoWindow({
+    mapRef.current = new naver.maps.Map('map', { tileSpare: 8 });
+    infoWindowRef.current = new naver.maps.InfoWindow({
       content: '',
       anchorSkew: true,
     });
+  }, []);
 
-    naver.maps.Event.once(mapRef.current, 'init', () => {
+  // 마커 관련
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !latLngs) return;
+
+    naver.maps.Event.once(map, 'init', () => {
       // 마커 초기화
-      if (latLngs) {
-        setMarkers(createMarkers({ latLngs }));
-      }
+      setMarkers(createMarkers({ latLngs }));
     });
+  }, [latLngs]);
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || markers.length === 0) return;
 
-    // searchCoordinateToAddress
+    // zoom 초기 사이즈가 마커를 표시할 수 있는 최소 줌 사이즈 이상이면 마커 출력
+    if (map.getZoom() >= CONST.MARKER_DISPLAYABLE_MIN_ZOOM) {
+      markers.forEach((marker) => marker.setMap(map));
+    }
+
+    // 지도 유휴 상태일 때 & 줌 이벤트 발생 시
+    naver.maps.Event.addListener(
+      mapRef.current,
+      'idle',
+      idleHandler({ map, markers })
+    );
+  }, [markers]);
+
+  // geoJson 있는 경우 그리기
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+
+    console.log(geoJson);
+
+    // geoJson 변경되면 기존에 그러진 것은 삭제
+    map.data
+      .getAllFeature()
+      .forEach((feature) => map.data.removeFeature(feature));
+
+    if (geoJson) {
+      map.data.addGeoJson(geoJson, true);
+      map.fitBounds(coordsToPointArray(geoJson.geometry));
+    }
+  }, [geoJson]);
+
+  // functions
+  useEffect(() => {
+    const map = mapRef.current;
+    const infoWindow = infoWindowRef.current;
+
+    if (!map || !infoWindow) return;
+
     if (functions?.searchCoordinateToAddress) {
       naver.maps.Event.addListener(map, 'click', async ({ latlng }) => {
         infoWindow.close();
@@ -43,7 +86,6 @@ const useMap = ({ markers: latLngs, functions }: IMap) => {
       });
     }
 
-    // searchAddressToCoordinate
     if (functions?.searchAddressToCoordinate) {
       infoWindow.close();
       searchAddressToCoordinate(functions.searchAddressToCoordinate).then(
@@ -63,25 +105,10 @@ const useMap = ({ markers: latLngs, functions }: IMap) => {
         }
       );
     }
-  }, [functions, latLngs]);
-
-  // 마커 관련
-  useEffect(() => {
-    const map = mapRef.current;
-    if (!map || markers.length === 0) return;
-
-    // zoom 초기 사이즈가 마커를 표시할 수 있는 최소 줌 사이즈 이상이면 마커 출력
-    if (map.getZoom() >= CONST.MARKER_DISPLAYABLE_MIN_ZOOM) {
-      markers.forEach((marker) => marker.setMap(map));
-    }
-
-    // 지도 유휴 상태일 때 & 줌 이벤트 발생 시
-    naver.maps.Event.addListener(
-      mapRef.current,
-      'idle',
-      idleHandler({ map, markers })
-    );
-  }, [markers]);
+  }, [
+    functions?.searchCoordinateToAddress,
+    functions?.searchAddressToCoordinate,
+  ]);
 };
 
 export default useMap;
