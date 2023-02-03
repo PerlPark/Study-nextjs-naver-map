@@ -7,7 +7,7 @@ import createMarkers from './utils/createMarkers';
 import CONST from '@/constants/const';
 import idleHandler from './eventHandlers/idleHandler';
 
-const useMap = ({ markers: latLngs, functions }: IMap) => {
+const useMap = ({ markers: latLngs, functions, geoJson }: IMap) => {
   const mapRef = useRef<naver.maps.Map>();
 
   const [markers, setMarkers] = useState<naver.maps.Marker[]>([]);
@@ -24,10 +24,15 @@ const useMap = ({ markers: latLngs, functions }: IMap) => {
       anchorSkew: true,
     });
 
-    naver.maps.Event.once(mapRef.current, 'init', () => {
+    naver.maps.Event.once(map, 'init', () => {
       // 마커 초기화
       if (latLngs) {
         setMarkers(createMarkers({ latLngs }));
+      }
+
+      // geoJson 있는 경우 그리기
+      if (geoJson) {
+        map.data.addGeoJson(geoJson, true);
       }
     });
 
@@ -63,7 +68,7 @@ const useMap = ({ markers: latLngs, functions }: IMap) => {
         }
       );
     }
-  }, [functions, latLngs]);
+  }, [functions, geoJson, latLngs]);
 
   // 마커 관련
   useEffect(() => {
