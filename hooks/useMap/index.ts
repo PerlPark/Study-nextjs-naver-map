@@ -1,33 +1,34 @@
 import getInfoWidowContent from '@/hooks/useMap/utils/getInfoWindow';
 import searchCoordinateToAddress from '@/hooks/useMap/functions/searchCoordinateToAddress';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type IMap from './types';
 import searchAddressToCoordinate from './functions/searchAddressToCoordinate';
-import marker from './marker';
+import createMarkers from './utils/createMarkers';
+import CONST from '@/constants/const';
+import controlMarkersWhenZoomChanged from './utils/zoomChangedSetMarker';
 
-const useMap = ({ markers, functions }: IMap) => {
+const useMap = ({ markers: latLngs, functions }: IMap) => {
   const mapRef = useRef<naver.maps.Map>();
 
-  useEffect(() => {
-    mapRef.current = new naver.maps.Map('map');
-    const map = mapRef.current;
+  const [markers, setMarkers] = useState<naver.maps.Marker[]>([]);
 
-    // 마커 생성
-    markers?.map(([lat, lng]) => {
-      new naver.maps.Marker({
-        map: map,
-        icon: {
-          content: marker,
-          size: new naver.maps.Size(12, 12),
-          anchor: new naver.maps.Point(6, 6),
-        },
-        position: new naver.maps.LatLng(lat, lng),
-      }).setMap(map);
+  useEffect(() => {
+    mapRef.current = new naver.maps.Map('map', {
+      center: [127.0473753, 37.5175066],
+      zoom: 12,
     });
+    const map = mapRef.current;
 
     const infoWindow = new naver.maps.InfoWindow({
       content: '',
       anchorSkew: true,
+    });
+
+    naver.maps.Event.once(mapRef.current, 'init', () => {
+      // 마커 초기화
+      if (latLngs) {
+        setMarkers(createMarkers({ latLngs }));
+      }
     });
 
     // searchCoordinateToAddress
@@ -62,7 +63,25 @@ const useMap = ({ markers, functions }: IMap) => {
         }
       );
     }
-  }, [functions]);
+  }, [functions, latLngs]);
+
+  // 마커 관련
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || markers.length === 0) return;
+
+    // zoom 초기 사이즈가 마커를 표시할 수 있는 최소 줌 사이즈 이상이면 마커 출력
+    if (map.getZoom() >= CONST.MARKER_DISPLAYABLE_MIN_ZOOM) {
+      markers.forEach((marker) => marker.setMap(map));
+    }
+
+    // 줌 이벤트 발생 시 마커 컨트롤
+    naver.maps.Event.addListener(
+      map,
+      'zoom_changed',
+      controlMarkersWhenZoomChanged(markers, map)
+    );
+  }, [markers]);
 };
 
 export default useMap;
