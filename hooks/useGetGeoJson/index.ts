@@ -8,6 +8,11 @@ const useGetGeoJson = (url: string) => {
   const [geoJson, setGeoJson] = useState<GeoJsonType>();
 
   useEffect(() => {
+    if (!url) {
+      setGeoJson(undefined);
+      return;
+    }
+
     axios.get<GeoJsonType>(url).then((res) => setGeoJson(res.data));
   }, [url]);
 
