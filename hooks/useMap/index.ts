@@ -5,7 +5,7 @@ import type IMap from './types';
 import searchAddressToCoordinate from './functions/searchAddressToCoordinate';
 import createMarkers from './utils/createMarkers';
 import CONST from '@/constants/const';
-import controlMarkersWhenZoomChanged from './utils/zoomChangedSetMarker';
+import controlMarkersWhenZoomChanged from './eventHandlers/zoomChangedSetMarker';
 
 const useMap = ({ markers: latLngs, functions }: IMap) => {
   const mapRef = useRef<naver.maps.Map>();
