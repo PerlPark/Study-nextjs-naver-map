@@ -67,10 +67,12 @@
 
 #### # 마커
 
-- [ ] [마커 표시하기](https://navermaps.github.io/maps.js.ncp/docs/tutorial-1-marker-simple.example.html)
+- [x] [마커 표시하기](https://navermaps.github.io/maps.js.ncp/docs/tutorial-1-marker-simple.example.html)
+  - Branch > [marker/simple](https://github.com/PerlPark/Study-nextjs-naver-map/tree/marker/simple)
 - [ ] [이미지 아이콘 사용하기](https://navermaps.github.io/maps.js.ncp/docs/tutorial-3-marker-image-icon.example.html)
 - [ ] [스프라이트 이미지 아이콘 사용하기](https://navermaps.github.io/maps.js.ncp/docs/tutorial-4-marker-sprite-image-icon.example.html)
-- [ ] [HTML 아이콘 사용하기](https://navermaps.github.io/maps.js.ncp/docs/tutorial-5-marker-html-icon.example.html)
+- [x] [HTML 아이콘 사용하기](https://navermaps.github.io/maps.js.ncp/docs/tutorial-5-marker-html-icon.example.html)
+  - Branch > [marker/icon/html](https://github.com/PerlPark/Study-nextjs-naver-map/tree/marker/icon/html)
 - [ ] [심벌 아이콘 사용하기](https://navermaps.github.io/maps.js.ncp/docs/tutorial-6-marker-symbol-icon.example.html)
 - [ ] [이미지 아이콘 레티나 대응하기](https://navermaps.github.io/maps.js.ncp/docs/tutorial-7-marker-retina.example.html)
 - [ ] [스프라이트 이미지 아이콘 레티나 대응하기](https://navermaps.github.io/maps.js.ncp/docs/tutorial-8-marker-retina-sprite.example.html)
@@ -78,7 +80,8 @@
 - [ ] [애니메이션 마커 표시하기](https://navermaps.github.io/maps.js.ncp/docs/tutorial-marker-animation.example.html)
 - [ ] [마커 클러스터화하기](https://navermaps.github.io/maps.js.ncp/docs/tutorial-marker-cluster.example.html)
 - [ ] [겹침 마커 처리하기](https://navermaps.github.io/maps.js.ncp/docs/tutorial-marker-intersect.example.html)
-- [ ] [보이는 지도 영역의 마커만 표시하기](https://navermaps.github.io/maps.js.ncp/docs/tutorial-marker-viewport.example.html)
+- [x] [보이는 지도 영역의 마커만 표시하기](https://navermaps.github.io/maps.js.ncp/docs/tutorial-marker-viewport.example.html)
+  - Branch > [marker/viewport](https://github.com/PerlPark/Study-nextjs-naver-map/tree/marker/viewport)
 - [ ] [다수의 마커에 이벤트 핸들러 사용하기](https://navermaps.github.io/maps.js.ncp/docs/tutorial-marker-viewportevents.example.html)
 
 #### # 정보 창
