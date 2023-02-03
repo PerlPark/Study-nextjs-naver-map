@@ -6,6 +6,7 @@ import searchAddressToCoordinate from './functions/searchAddressToCoordinate';
 import createMarkers from './utils/createMarkers';
 import CONST from '@/constants/const';
 import idleHandler from './eventHandlers/idleHandler';
+import coordsToPointArray from './utils/coordsToPointArray';
 
 const useMap = ({ markers: latLngs, functions, geoJson }: IMap) => {
   const mapRef = useRef<naver.maps.Map>();
@@ -33,6 +34,7 @@ const useMap = ({ markers: latLngs, functions, geoJson }: IMap) => {
       // geoJson 있는 경우 그리기
       if (geoJson) {
         map.data.addGeoJson(geoJson, true);
+        map.fitBounds(coordsToPointArray(geoJson.geometry));
       }
     });
 
