@@ -18,9 +18,9 @@ function createMarkers({ latLngs }: ICreateMarkers) {
 }
 
 function getMarkerContent(size: number) {
-  return `<div style="width: ${size}px;height: ${size}px;background-color: #0267FF;border: 1px #ffffff solid;border-radius: ${
+  return `<img src="/marker.png" style="width: ${size}px;height: ${size}px;box-shadow: 0px 0px 7px 1px #0267FF;border-radius: ${
     size / 2
-  }px;box-shadow: 0px 0px 7px 1px #0267FF;max-width: 12px;max-height: 12px;" />`;
+  }px" alt="" />`;
 }
 
 export default createMarkers;
