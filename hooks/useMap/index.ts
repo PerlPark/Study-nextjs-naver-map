@@ -5,7 +5,7 @@ import type IMap from './types';
 import searchAddressToCoordinate from './functions/searchAddressToCoordinate';
 import createMarkers from './utils/createMarkers';
 import CONST from '@/constants/const';
-import controlMarkersWhenZoomChanged from './eventHandlers/zoomChangedSetMarker';
+import idleHandler from './eventHandlers/idleHandler';
 
 const useMap = ({ markers: latLngs, functions }: IMap) => {
   const mapRef = useRef<naver.maps.Map>();
@@ -75,11 +75,11 @@ const useMap = ({ markers: latLngs, functions }: IMap) => {
       markers.forEach((marker) => marker.setMap(map));
     }
 
-    // 줌 이벤트 발생 시 마커 컨트롤
+    // 지도 유휴 상태일 때 & 줌 이벤트 발생 시
     naver.maps.Event.addListener(
-      map,
-      'zoom_changed',
-      controlMarkersWhenZoomChanged(markers, map)
+      mapRef.current,
+      'idle',
+      idleHandler({ map, markers })
     );
   }, [markers]);
 };
