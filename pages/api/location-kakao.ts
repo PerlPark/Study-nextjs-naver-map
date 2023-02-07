@@ -1,16 +1,32 @@
 import axios from 'axios';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-type Data = {
-  result: any;
+export type DocumentsItem = {
+  address_name: string;
+  id: string;
+  place_name: string;
+};
+
+export type KakaoResponse = {
+  documents: DocumentsItem[];
+  meta: {
+    is_end: boolean;
+    pageable_count: number;
+    same_name: {
+      keyword: string;
+      region: any[];
+      selected_region: string;
+    } | null;
+    total_count: number;
+  };
 };
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<DocumentsItem[]>
 ) {
   try {
-    const result = await axios.get(
+    const result = await axios.get<KakaoResponse>(
       'https://dapi.kakao.com/v2/local/search/keyword.json',
       {
         params: { ...req.query },
@@ -19,8 +35,8 @@ export default async function handler(
         },
       }
     );
-    res.status(200).json(result?.data);
-  } catch (err) {
-    throw err;
+    res.status(200).json(result?.data.documents);
+  } catch {
+    res.status(200).json([]);
   }
 }
