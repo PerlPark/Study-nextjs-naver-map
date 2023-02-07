@@ -107,10 +107,19 @@ a {
 }
 
 main {
-  padding: 6rem;
+  padding: 3rem;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 0.6rem;
+  font-size: 14px;
+  border: 1px rgba(0, 0, 0, 0.2) solid;
+  border-radius: 4px;
 }
