@@ -21,7 +21,7 @@ const useMap = ({ markers: latLngs, functions, geoJson }: IMap) => {
 
   // init ------------------------------------
   useEffect(() => {
-    mapRef.current = new naver.maps.Map('map', { tileSpare: 16 });
+    mapRef.current = new naver.maps.Map('map', { tileSpare: 16, zoom: 15 });
     infoWindowRef.current = new naver.maps.InfoWindow({
       content: '',
       anchorSkew: true,
@@ -122,7 +122,6 @@ const useMap = ({ markers: latLngs, functions, geoJson }: IMap) => {
     if (!map) return;
 
     const point = new naver.maps.Point(Number(x), Number(y));
-    map.setZoom(15);
     map.setCenter(point);
 
     if (placeMarkerRef.current) hideMarker(placeMarkerRef.current);
