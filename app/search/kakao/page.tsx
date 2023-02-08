@@ -49,30 +49,31 @@ const SearchKakao = () => {
           />
         </form>
         <ul>
-          {searches?.map((v) => (
-            <li
-              key={v.id || `${v.x}${v.y}`}
-              style={{
-                borderBottom: '1px #aaa solid',
-                padding: '10px 0',
-              }}
-            >
-              <button
-                type="button"
-                onClick={selectPlace(v)}
+          {inputRef.current?.value &&
+            searches?.map((v) => (
+              <li
+                key={v.id || `${v.x}${v.y}`}
                 style={{
-                  textAlign: 'left',
-                  border: 0,
-                  background: 'transparent',
-                  cursor: 'pointer',
+                  borderBottom: '1px #aaa solid',
+                  padding: '10px 0',
                 }}
               >
-                {v.place_name}
-                <br />
-                {v.address_name}
-              </button>
-            </li>
-          ))}
+                <button
+                  type="button"
+                  onClick={selectPlace(v)}
+                  style={{
+                    textAlign: 'left',
+                    border: 0,
+                    background: 'transparent',
+                    cursor: 'pointer',
+                  }}
+                >
+                  {v.place_name}
+                  <br />
+                  {v.address_name}
+                </button>
+              </li>
+            ))}
         </ul>
       </div>
       <Map style={{ width: '550px', height: '600px' }} />
