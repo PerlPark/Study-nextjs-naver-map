@@ -5,6 +5,8 @@ export type DocumentsItem = {
   address_name: string;
   id: string;
   place_name: string;
+  x: string;
+  y: string;
 };
 
 export type KakaoResponse = {

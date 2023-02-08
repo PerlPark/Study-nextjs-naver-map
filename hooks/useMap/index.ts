@@ -1,6 +1,6 @@
 import getInfoWidowContent from '@/hooks/useMap/utils/getInfoWindow';
 import searchCoordinateToAddress from '@/hooks/useMap/functions/searchCoordinateToAddress';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type IMap from './types';
 import searchAddressToCoordinate from './functions/searchAddressToCoordinate';
 import createMarkers from './utils/createMarkers';
@@ -8,10 +8,14 @@ import CONST from '@/constants/const';
 import idleHandler from './eventHandlers/idleHandler';
 import coordsToPointArray from './utils/coordsToPointArray';
 import Map from '@/components/Map';
+import createPlaceMarker from './utils/createPlaceMarker';
+import hideMarker from './utils/hideMarker';
+import showMarker from './utils/showMarker';
 
 const useMap = ({ markers: latLngs, functions, geoJson }: IMap) => {
   const mapRef = useRef<naver.maps.Map>();
   const infoWindowRef = useRef<naver.maps.InfoWindow>();
+  const placeMarkerRef = useRef<naver.maps.Marker>();
 
   const [markers, setMarkers] = useState<naver.maps.Marker[]>([]);
 
@@ -109,7 +113,26 @@ const useMap = ({ markers: latLngs, functions, geoJson }: IMap) => {
     functions?.searchAddressToCoordinate,
   ]);
 
-  return { Map };
+  // method ------------------------------------
+  const setSelectPlace = useCallback(function (
+    [x, y]: [string, string] | [number, number],
+    name: string
+  ) {
+    const map = mapRef.current;
+    if (!map) return;
+
+    const point = new naver.maps.Point(Number(x), Number(y));
+    map.setZoom(15);
+    map.setCenter(point);
+
+    if (placeMarkerRef.current) hideMarker(placeMarkerRef.current);
+
+    placeMarkerRef.current = createPlaceMarker({ point, name });
+    showMarker(placeMarkerRef.current, map);
+  },
+  []);
+
+  return { Map, setSelectPlace };
 };
 
 export default useMap;

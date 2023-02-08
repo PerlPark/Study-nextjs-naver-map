@@ -1,74 +1,78 @@
 'use client';
 
 import useDebounce from '@/hooks/useDebounce';
+import useMap from '@/hooks/useMap';
 import type { DocumentsItem } from '@/pages/api/location-kakao';
 import axios from 'axios';
 import { useRef, useState } from 'react';
+import styles from './page.module.css';
 
 const SearchKakao = () => {
   const { setDebounce } = useDebounce();
+  const { setSelectPlace, Map } = useMap({});
 
   const inputRef = useRef<HTMLInputElement>(null);
   const [searches, setSearches] = useState<DocumentsItem[]>();
 
-  function getSearch(e: React.FormEvent) {
+  function search(query: string) {
+    axios
+      .get<DocumentsItem[]>('/api/location-kakao', {
+        params: { query, size: 10 },
+      })
+      .then((res) => setSearches(res.data));
+  }
+
+  function getPlaces(e: React.FormEvent) {
     e.preventDefault();
 
     const value = inputRef.current?.value;
     if (value) setDebounce(() => search(value), 100);
   }
 
-  function search(query: string) {
-    axios
-      .get<DocumentsItem[]>('/api/location-kakao', { params: { query } })
-      .then((res) => setSearches(res.data));
-  }
-
-  function getAddress(v: DocumentsItem) {
+  function selectPlace(selected: DocumentsItem) {
     return () => {
-      alert(v.address_name);
+      setSelectPlace([selected.x, selected.y], selected.place_name);
     };
   }
 
   return (
-    <div
-      style={{
-        width: '300px',
-      }}
-    >
-      <form onChange={getSearch} onSubmit={getSearch}>
-        <input
-          type="text"
-          ref={inputRef}
-          placeholder="검색어를 입력해주세요."
-        />
-      </form>
-      <ul>
-        {searches?.map((v) => (
-          <li
-            key={v.id}
-            style={{
-              borderBottom: '1px #aaa solid',
-              padding: '10px 0',
-            }}
-          >
-            <button
-              type="button"
-              onClick={getAddress(v)}
+    <div className={styles.container}>
+      <div className={styles.sidebar}>
+        <form onChange={getPlaces} onSubmit={getPlaces}>
+          <input
+            type="text"
+            ref={inputRef}
+            placeholder="검색어를 입력해주세요."
+          />
+        </form>
+        <ul>
+          {searches?.map((v) => (
+            <li
+              key={v.id}
               style={{
-                textAlign: 'left',
-                border: 0,
-                background: 'transparent',
-                cursor: 'pointer',
+                borderBottom: '1px #aaa solid',
+                padding: '10px 0',
               }}
             >
-              {v.place_name}
-              <br />
-              {v.address_name}
-            </button>
-          </li>
-        ))}
-      </ul>
+              <button
+                type="button"
+                onClick={selectPlace(v)}
+                style={{
+                  textAlign: 'left',
+                  border: 0,
+                  background: 'transparent',
+                  cursor: 'pointer',
+                }}
+              >
+                {v.place_name}
+                <br />
+                {v.address_name}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <Map style={{ width: '550px', height: '600px' }} />
     </div>
   );
 };
