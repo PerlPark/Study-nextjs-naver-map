@@ -7,6 +7,7 @@ import createMarkers from './utils/createMarkers';
 import CONST from '@/constants/const';
 import idleHandler from './eventHandlers/idleHandler';
 import coordsToPointArray from './utils/coordsToPointArray';
+import Map from '@/components/Map';
 
 const useMap = ({ markers: latLngs, functions, geoJson }: IMap) => {
   const mapRef = useRef<naver.maps.Map>();
@@ -109,6 +110,8 @@ const useMap = ({ markers: latLngs, functions, geoJson }: IMap) => {
     functions?.searchCoordinateToAddress,
     functions?.searchAddressToCoordinate,
   ]);
+
+  return { Map };
 };
 
 export default useMap;
