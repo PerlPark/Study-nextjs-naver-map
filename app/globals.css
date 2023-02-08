@@ -123,3 +123,12 @@ select {
   border: 1px rgba(0, 0, 0, 0.2) solid;
   border-radius: 4px;
 }
+
+.placeMarker {
+  white-space: nowrap;
+  background-color: #fff;
+  border: 1px #ddd solid;
+  border-radius: 4px;
+  padding: 4px 6px 3px;
+  font-size: 14px;
+}

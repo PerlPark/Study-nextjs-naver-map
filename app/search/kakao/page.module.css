@@ -1,0 +1,14 @@
+.container {
+  width: 800px;
+  height: 600px;
+
+  display: flex;
+  gap: 16px;
+}
+
+.sidebar {
+  flex-grow: 1;
+  height: 600px;
+
+  overflow: hidden;
+}
