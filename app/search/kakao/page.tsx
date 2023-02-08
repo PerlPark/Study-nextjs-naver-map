@@ -17,7 +17,7 @@ const SearchKakao = () => {
   function search(query: string) {
     axios
       .get<DocumentsItem[]>('/api/location-kakao', {
-        params: { query, size: 10 },
+        params: { query },
       })
       .then((res) => setSearches(res.data));
   }
@@ -26,12 +26,15 @@ const SearchKakao = () => {
     e.preventDefault();
 
     const value = inputRef.current?.value;
-    if (value) setDebounce(() => search(value), 100);
+    if (value) setDebounce(() => search(value), 200);
   }
 
   function selectPlace(selected: DocumentsItem) {
     return () => {
-      setSelectPlace([selected.x, selected.y], selected.place_name);
+      setSelectPlace(
+        [selected.x, selected.y],
+        selected.place_name || selected.address_name
+      );
     };
   }
 
@@ -48,7 +51,7 @@ const SearchKakao = () => {
         <ul>
           {searches?.map((v) => (
             <li
-              key={v.id}
+              key={v.id || `${v.x}${v.y}`}
               style={{
                 borderBottom: '1px #aaa solid',
                 padding: '10px 0',

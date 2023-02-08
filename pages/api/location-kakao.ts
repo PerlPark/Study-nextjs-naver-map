@@ -28,17 +28,36 @@ export default async function handler(
   res: NextApiResponse<DocumentsItem[]>
 ) {
   try {
-    const result = await axios.get<KakaoResponse>(
-      'https://dapi.kakao.com/v2/local/search/keyword.json',
+    const {
+      data: { documents: addresses },
+    } = await axios.get<KakaoResponse>(
+      'https://dapi.kakao.com/v2/local/search/address.json',
       {
-        params: { ...req.query },
+        params: { query: req.query.query, size: 30 },
         headers: {
           Authorization: `KakaoAK ${process.env.KAKAO_REST_API_KEY}`,
         },
       }
     );
-    res.status(200).json(result?.data.documents);
-  } catch {
+
+    const {
+      data: { documents: places },
+    } = await axios.get<KakaoResponse>(
+      'https://dapi.kakao.com/v2/local/search/keyword.json',
+      {
+        params: {
+          query: req.query.query,
+          size: 15,
+        },
+        headers: {
+          Authorization: `KakaoAK ${process.env.KAKAO_REST_API_KEY}`,
+        },
+      }
+    );
+
+    res.status(200).json([...addresses, ...places]);
+  } catch (err) {
+    console.log(err);
     res.status(200).json([]);
   }
 }
