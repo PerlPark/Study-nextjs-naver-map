@@ -15,16 +15,16 @@ const useMap = ({ markers: latLngs, functions, geoJson }: IMap) => {
 
   const [markers, setMarkers] = useState<naver.maps.Marker[]>([]);
 
-  // 객체 생성
+  // init ------------------------------------
   useEffect(() => {
-    mapRef.current = new naver.maps.Map('map', { tileSpare: 8 });
+    mapRef.current = new naver.maps.Map('map', { tileSpare: 16 });
     infoWindowRef.current = new naver.maps.InfoWindow({
       content: '',
       anchorSkew: true,
     });
   }, []);
 
-  // 마커 관련
+  // marker ------------------------------------
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !latLngs) return;
@@ -51,12 +51,10 @@ const useMap = ({ markers: latLngs, functions, geoJson }: IMap) => {
     );
   }, [markers]);
 
-  // geoJson 있는 경우 그리기
+  // geoJson ------------------------------------
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
-
-    console.log(geoJson);
 
     // geoJson 변경되면 기존에 그러진 것은 삭제
     map.data
@@ -69,7 +67,7 @@ const useMap = ({ markers: latLngs, functions, geoJson }: IMap) => {
     }
   }, [geoJson]);
 
-  // functions
+  // functions ------------------------------------
   useEffect(() => {
     const map = mapRef.current;
     const infoWindow = infoWindowRef.current;
