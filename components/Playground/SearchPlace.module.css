@@ -1,0 +1,7 @@
+.container [class*='result'] {
+  display: none;
+}
+
+.container:focus-within [class*='result'] {
+  display: block;
+}

@@ -1,0 +1,38 @@
+.result {
+  position: relative;
+}
+
+.result ul {
+  position: absolute;
+  top: 5px;
+  background-color: #fff;
+  border: 1px #ddd solid;
+  border-radius: 4px;
+  width: 100%;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.result ul li {
+  list-style: none;
+  border-bottom: 1px #ddd solid;
+}
+
+.result ul li:last-of-type {
+  border-bottom: 0;
+}
+
+.item {
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 0 8px;
+  height: 42px;
+}
+
+.subText {
+  font-size: 10px;
+  color: #999;
+}
