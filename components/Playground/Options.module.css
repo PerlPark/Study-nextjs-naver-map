@@ -1,0 +1,23 @@
+.options {
+  padding: 1rem;
+}
+
+.title {
+  padding-bottom: 0.6rem;
+  border-bottom: 1px rgba(0, 0, 0, 0.2) dotted;
+  margin-bottom: 1rem;
+  color: darkgray;
+}
+
+.sectionTitle {
+  font-size: 16px;
+  margin-bottom: 0.4rem;
+}
+
+.options > div {
+  margin-bottom: 2rem;
+}
+
+.options > div > div {
+  margin-bottom: 1rem;
+}
