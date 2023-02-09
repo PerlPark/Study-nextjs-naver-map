@@ -1,8 +1,10 @@
 let timeout: NodeJS.Timeout;
 
-function debounce(fn: () => void, time: number) {
+export function debounce(fn: () => void, time: number) {
   clearTimeout(timeout);
   timeout = setTimeout(fn, time);
 }
 
-export default debounce;
+export function clearDebounce() {
+  clearTimeout(timeout);
+}
